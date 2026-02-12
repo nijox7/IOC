@@ -130,10 +130,10 @@ delay ( unsigned int milisec )
     nanosleep ( &ts, &dummy );
 }
 
-int
-bp_thread(void* period_arg) {
+void
+bp_thread(int* period_arg) {
     // button
-    int period = *((int *) period_arg);
+    int period = *period_arg;
     int bounce_period = 100;
     int old_val = 1; // default button released
     int val = 1;
@@ -160,15 +160,15 @@ bp_thread(void* period_arg) {
 
         // waiting bounce period button before take new measure
         // waiting the original period if bounce_period is too short 
-        if (bp_on && period > bounce_period) delay(bounce_period);
+        if (bp_on && (period < bounce_period)) delay(bounce_period);
         else delay(period);
     }
 
-    return 0;
+    return;
 }
 
-int
-bp_threadv2(void* period_arg) {
+void
+bp_threadv2(int* period_arg) {
     // button
     int period = *((int *) period_arg);
     int old_val = 1; // default button released
@@ -193,7 +193,7 @@ bp_threadv2(void* period_arg) {
         delay(period);
     }
 
-    return 0;
+    return;
 }
 
 int
@@ -228,7 +228,7 @@ main ( int argc, char **argv )
     // ---------------------------------------------
 
     pthread_t thd;
-    if (pthread_create(&thd, NULL, bp_thread, (void*) &period) < 0){
+    if (pthread_create(&thd, NULL, (void*) bp_thread, &period) < 0){
         printf("-- error: cannot create thread.\n");
         exit(1);
     }

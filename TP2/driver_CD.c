@@ -4,6 +4,8 @@
 #include <asm/io.h>
 #include <mach/platform.h>
 
+#include <linux/uaccess.h>
+
 
 /* ------ ACCES GPIO ------ */
 
@@ -125,7 +127,7 @@ read_led_CD(struct file *file, char *buf, size_t count, loff_t *ppos) {
     }
 
     if(nb) {
-        copy_to_user(buf, values, nb); // on remplit buf avec les valeurs lues
+        copy_to_user(buf, values, nb*sizeof(int)); // on remplit buf avec les valeurs lues
         // on ne peut pas modifier buf directement
     }
 
@@ -136,7 +138,7 @@ read_led_CD(struct file *file, char *buf, size_t count, loff_t *ppos) {
 // (par exemple 01 : led 1 éteinte, led2 allumée)
 static ssize_t 
 write_led_CD(struct file *file, const char *buf, size_t count, loff_t *ppos) {
-    char buf_copy[count]; 
+    char buf_copy[count];
     copy_from_user(&buf_copy, buf, count);
     // on doit d'abord copier buf, et lire la copie
 

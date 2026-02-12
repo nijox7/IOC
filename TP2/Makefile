@@ -1,4 +1,4 @@
-CARD_NUMB       = 21
+CARD_NUMB       = 25
 ROUTER          = peri
 LOGIN           = carbou_das
 LAB             = lab2

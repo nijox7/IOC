@@ -1,11 +1,12 @@
-NAME = carbou_das # nom1_nom2
-RPI ?= 21 # card_number
+NAME = carbou_das# nom1_nom2
+REP=/lab1
+RPI ?= 25 # card_number
 
 CROSS_COMPILE = bcm2708hardfp-
 
 CFLAGS=-Wall -Wfatal-errors -O2
 LDFLAGS=-static  -pthread
-EXEC=blink0.x blink0_pt.x blink1_pt.x read_bp.x blink01_bp_pt.x
+EXEC=blink0.x blink0_pt.x blink01_pt.x read_bp.x blink01_bp_pt.x
 
 help:
 	@echo ""
@@ -21,7 +22,7 @@ help:
 all: clean $(EXEC)
 
 copy: *.x
-	scp -P 622$(RPI) $^ pi@peri:$(NAME)
+	scp -P 622$(RPI) $^ pi@peri:$(NAME)$(REP)
 
 %.x: %.c
 	$(CROSS_COMPILE)gcc -o $@ $^ $(LDFLAGS)
